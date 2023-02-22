@@ -19,6 +19,7 @@ export const getUsuario = async (req, res) => {
     }
 };
 export const postUsuario = async (req, res) => {
+    await Usuario.sync();
     const { body } = req;
     try {
         const existeEmail = await Usuario.findOne({

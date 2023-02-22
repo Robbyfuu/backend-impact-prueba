@@ -1,8 +1,8 @@
 import { Sequelize } from 'sequelize';
 import { logger } from '../utils/logger.js';
-const MYSQLDATABASE = process.env.MYSQLDATABASE || 'tsm_admin';
+const MYSQLDATABASE = process.env.MYSQLDATABASE || 'impactDB';
 const MYSQLUSER = process.env.MYSQLUSER || 'root';
-const MYSQLPASSWORD = process.env.MYSQLPASSWORD || 'admin';
+const MYSQLPASSWORD = process.env.MYSQLPASSWORD || 'password';
 const MYSQLHOST = process.env.MYSQLHOST || 'localhost';
 const MYSQLPORT = process.env.MYSQLPORT || '3306';
 logger.info(process.env.MYSQLDATABASE ? 'prod' : 'dev');
