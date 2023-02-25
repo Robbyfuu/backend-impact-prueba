@@ -2,15 +2,10 @@ import express from 'express';
 import userRoutes from '../routes/usuario.routes.js';
 import authRoutes from '../routes/auth.routes.js';
 import trabajadorRoutes from '../routes/trabajador.routes.js';
-import sueldoRoutes from '../routes/sueldo.routes.js';
-import egresoRoutes from '../routes/egresos.routes.js';
-import licenciaRoutes from '../routes/licencias_medicas.routes.js';
-import vacacionesRoutes from '../routes/vacacion.routes.js';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
 import db from '../db/connection.js';
-import { transporter } from './../helpers/mailer.js';
 import { logger, morganStream } from '../utils/logger.js';
 class Server {
     constructor() {
@@ -18,10 +13,6 @@ class Server {
             usuarios: '/api/usuarios',
             auth: '/api/auth',
             trabajador: '/api/trabajador',
-            sueldo: '/api/sueldo',
-            egresos: '/api/egresos',
-            licencias_medicas: '/api/licencias',
-            vacaciones: '/api/vacaciones'
         };
         this.app = express();
         this.port = process.env.PORT || '8000';
@@ -29,7 +20,7 @@ class Server {
         this.dbConnection();
         this.middlewares();
         this.routes();
-        this.mailerConnection();
+        // this.mailerConnection()
     }
     async dbConnection() {
         try {
@@ -40,15 +31,15 @@ class Server {
             throw new Error(error);
         }
     }
-    async mailerConnection() {
-        try {
-            transporter.verify();
-            logger.info('Mailer online');
-        }
-        catch (error) {
-            throw new Error(error);
-        }
-    }
+    /*     async mailerConnection() {
+            try{
+                transporter.verify();
+                logger.info('Mailer online');
+            }
+            catch(error:any){
+                throw new Error(error);
+            }
+        } */
     middlewares() {
         // CORS
         this.app.use(cors());
@@ -66,10 +57,6 @@ class Server {
         this.app.use(this.apiPaths.usuarios, userRoutes);
         this.app.use(this.apiPaths.auth, authRoutes);
         this.app.use(this.apiPaths.trabajador, trabajadorRoutes);
-        this.app.use(this.apiPaths.sueldo, sueldoRoutes);
-        this.app.use(this.apiPaths.egresos, egresoRoutes);
-        this.app.use(this.apiPaths.licencias_medicas, licenciaRoutes);
-        this.app.use(this.apiPaths.vacaciones, vacacionesRoutes);
     }
     listen() {
         this.app.listen(this.port, () => {

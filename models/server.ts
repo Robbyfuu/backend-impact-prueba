@@ -2,10 +2,7 @@ import express, { Application,RequestHandler } from 'express';
 import userRoutes from '../routes/usuario.routes.js';
 import authRoutes from '../routes/auth.routes.js';
 import trabajadorRoutes from '../routes/trabajador.routes.js';
-import sueldoRoutes from '../routes/sueldo.routes.js';
-import egresoRoutes from '../routes/egresos.routes.js';
-import licenciaRoutes from '../routes/licencias_medicas.routes.js';
-import vacacionesRoutes from '../routes/vacacion.routes.js';
+
 import morgan from 'morgan';
 import helmet from 'helmet';
 
@@ -25,10 +22,7 @@ class Server {
         usuarios: '/api/usuarios',
         auth : '/api/auth',
         trabajador: '/api/trabajador',
-        sueldo : '/api/sueldo',
-        egresos: '/api/egresos',
-        licencias_medicas:'/api/licencias',
-        vacaciones : '/api/vacaciones'
+
     }
 
     constructor() {
@@ -39,7 +33,7 @@ class Server {
         this.dbConnection();
         this.middlewares();
         this.routes();
-        this.mailerConnection()
+       // this.mailerConnection()
     }
 
     async dbConnection() {
@@ -54,7 +48,7 @@ class Server {
         }
 
     }
-    async mailerConnection() {
+/*     async mailerConnection() {
         try{
             transporter.verify();
             logger.info('Mailer online');
@@ -62,7 +56,7 @@ class Server {
         catch(error:any){
             throw new Error(error);
         }
-    }
+    } */
 
     middlewares() {
 
@@ -86,10 +80,7 @@ class Server {
         this.app.use( this.apiPaths.usuarios, userRoutes )
         this.app.use( this.apiPaths.auth, authRoutes )
         this.app.use( this.apiPaths.trabajador, trabajadorRoutes )
-        this.app.use( this.apiPaths.sueldo, sueldoRoutes )
-        this.app.use( this.apiPaths.egresos, egresoRoutes )
-        this.app.use( this.apiPaths.licencias_medicas, licenciaRoutes )
-        this.app.use( this.apiPaths.vacaciones, vacacionesRoutes )
+
                
     }
 

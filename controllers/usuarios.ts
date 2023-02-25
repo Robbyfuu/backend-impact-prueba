@@ -30,7 +30,7 @@ export const getUsuario = async( req: Request , res: Response ) => {
 }
 
 export const postUsuario  = async( req: Request , res: Response ) => {
-    await Usuario.sync();
+    
     const {body} = req;
 
     try {

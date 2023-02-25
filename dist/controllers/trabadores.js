@@ -1,73 +1,44 @@
-import Trabajador from '../models/trabajador.js';
-import { logger } from '../utils/logger.js';
+import Trabajador from "../models/trabajador.js";
+import { logger } from "../utils/logger.js";
 export const getTrabajadores = async (req, res) => {
     const trabajadores = await Trabajador.findAll();
     res.json({ ok: true, trabajadores });
 };
 export const getTrabajadoresActivos = async (req, res) => {
     try {
-        const trabajadores = await Trabajador.findAll({
-            where: {
-                estado: true
-            }
-        });
+        const trabajadores = await Trabajador.findAll();
         res.status(201).json({ ok: true, trabajadores });
     }
     catch (error) {
         logger.error(error);
         res.status(500).json({
             ok: false,
-            msg: 'Hable con el administrador'
+            msg: "Hable con el administrador",
         });
     }
 };
 export const getTrabajador = async (req, res) => {
     const { id } = req.params;
-    const trabajador = await Trabajador.findByPk(id);
-    if (trabajador) {
-        if (trabajador.estado === true) {
-            res.json({ ok: true, trabajador });
-        }
-        else {
-            res.status(204).json({
-                ok: false,
-                msg: `El trabajador con la ficha ${id} esta desvinculado`
+    try {
+        const trabajador = await Trabajador.findByPk(id);
+        if (!trabajador) {
+            return res.status(404).json({
+                msg: 'No existe un trabajador con el id ' + id
             });
         }
+        res.json({ ok: true, trabajador });
     }
-    else {
-        res.status(404).json({
-            ok: false,
-            msg: `No existe un trabajador con el id ${id}`
+    catch (error) {
+        logger.error(error);
+        res.status(500).json({
+            msg: 'Hable con el administrador'
         });
     }
 };
 export const postTrabajador = async (req, res) => {
     const { body } = req;
     try {
-        const existeFicha = await Trabajador.findOne({
-            where: {
-                ficha: body.ficha
-            }
-        });
-        const existeRut = await Trabajador.findOne({
-            where: {
-                rut: body.rut,
-                estado: true
-            }
-        });
-        if (existeFicha) {
-            return res.status(400).json({
-                ok: false,
-                msg: 'Ya existe un trabajador con la ficha ' + body.ficha
-            });
-        }
-        if (existeRut) {
-            return res.status(400).json({
-                ok: false,
-                msg: 'Ya existe un trabajador activo con el rut ' + body.rut
-            });
-        }
+        Trabajador.sync();
         const trabajador = new Trabajador(body);
         await trabajador.save();
         res.status(201).json({ ok: true, trabajador });
@@ -76,7 +47,7 @@ export const postTrabajador = async (req, res) => {
         logger.error(error);
         res.status(500).json({
             ok: false,
-            msg: 'Hable con el administrador'
+            msg: "Hable con el administrador",
         });
     }
 };
@@ -91,7 +62,7 @@ export const postTrabajadores = async (req, res) => {
         logger.error(error);
         res.status(500).json({
             ok: false,
-            msg: 'Hable con el administrador'
+            msg: "Hable con el administrador",
         });
     }
 };
@@ -103,7 +74,7 @@ export const putTrabajador = async (req, res) => {
         if (!trabajador) {
             return res.status(404).json({
                 ok: false,
-                msg: `No existe un trabajador con el id ${id}`
+                msg: `No existe un trabajador con el id ${id}`,
             });
         }
         await trabajador.update(body);
@@ -113,7 +84,7 @@ export const putTrabajador = async (req, res) => {
         logger.error(error);
         res.status(500).json({
             ok: false,
-            msg: 'Hable con el administrador'
+            msg: "Hable con el administrador",
         });
     }
 };
@@ -123,9 +94,10 @@ export const deleteTrabajador = async (req, res) => {
     if (!trabajador) {
         return res.status(404).json({
             ok: false,
-            msg: `No existe un trabajador con el id ${id}`
+            msg: `No existe un trabajador con el id ${id}`,
         });
     }
-    await trabajador.update({ estado: false });
+    await trabajador.destroy();
+    //   await trabajador.update({ estado: false });
     res.json({ ok: true, trabajador });
 };

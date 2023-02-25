@@ -16,23 +16,26 @@ export const login = async (req: Request, res: Response) => {
     const usuario = await Usuario.findOne({ where: { email } });
     if (!usuario) {
       return res.status(401).json({
+        ok: false,
         msg: "Usuario / Password no son correctos - email",
       });
     }
     if (!usuario.estado) {
       return res.status(401).json({
+        ok: false,
         msg: "Usuario / Password no son correctos - estado: false",
       });
     }
     const validPassword = bcryptjs.compareSync(password, usuario.password);
     if (!validPassword) {
       return res.status(401).json({
+        ok: false,
         msg: "Usuario / Password no son correctos - password",
       });
     }
     const token = await generarJWT(usuario.id);
 
-    res.json({
+    res.status(200).json({
       ok: true,
       usuario,
       token,
