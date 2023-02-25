@@ -25,11 +25,11 @@
 
 `POST /api/auth/login`
 
-    curl -i -H 'Accept: application/json' http://localhost:8000/api/auth/login
-        body: {
+    curl --location 'http://localhost:8000/api/auth/login' \
+        --data-raw '{
             "email": "admin@admin.com",
-            "password": "123456"
-        }
+            "password": "admin"
+        }'
 
 ### Response
 
@@ -55,13 +55,14 @@
 
 `POST /api/usuarios/`
 
-    curl -i -H 'Accept: application/json' http://localhost:8000/api/usuarios/
-        body: {
-            "nombre": "Roberto Arce",
-            "email": "admin@admin.com
-            "password": "123456",
-            "role": "ADMIN_ROLE"
-        }
+    curl --location --request POST 'http://localhost:8000/api/usuarios' \  
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "nombre": "R",
+        "email": "admin1@admin.com",
+        "password":"admin",
+        "role":"ADMIN_ROLE"
+    }'
 
 ### Response
 
@@ -86,15 +87,17 @@
 
 `POST /api/trabajador/`
 
-    curl -i -H 'Accept: application/json' http://localhost:8000/api/trabajador/
-        body: {
+     curl --location --request POST 'http://localhost:8000/api/trabajador/' \
+    --header 'x-token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjMsImlhdCI6MTY3NzI4NDc2MSwiZXhwIjoxNjc3ODg5NTYxfQ.c2yjNMAj2Zc0LFXYk26IfqF8nLcMJr8XT_fTEZeb5as' \
+    --header 'Content-Type: application/json' \
+      --data '{
             "id": 2,
             "apellido_paterno": "Arce",
             "nombre": "Roberto Hernán",
             "apellido_materno": "Muñoz",
             "email": "rarcemu@gmail.com",
             "telefono": "996419674"
-        }
+        }'
 
 ### Response
 
@@ -117,15 +120,17 @@
 
 `PUT /api/trabajador/:id`
 
-    curl -i -H 'Accept: application/json' http://localhost:8000/api/trabajador/
-        body: {
+     curl --location --request PUT 'http://localhost:8000/api/trabajador/2' \
+    --header 'x-token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjMsImlhdCI6MTY3NzI4NDc2MSwiZXhwIjoxNjc3ODg5NTYxfQ.c2yjNMAj2Zc0LFXYk26IfqF8nLcMJr8XT_fTEZeb5as' \
+    --header 'Content-Type: application/json' \
+      --data '{
             "id": 2,
             "apellido_paterno": "Arce",
             "nombre": "Roberto Hernán",
             "apellido_materno": "Muñoz",
             "email": "rarcemu@gmail.com",
             "telefono": "996419674"
-        }
+        }'
 
 ### Response
 
@@ -148,7 +153,8 @@
 
 `DELETE /api/trabajador/:id`
 
-    curl -i -H 'Accept: application/json' http://localhost:8000/api/trabajador/
+    curl --location --request DELETE 'http://localhost:8000/api/trabajador/2' \
+    --header 'x-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjMsImlhdCI6MTY3NzI4NDc2MSwiZXhwIjoxNjc3ODg5NTYxfQ.c2yjNMAj2Zc0LFXYk26IfqF8nLcMJr8XT_fTEZeb5as'
 
 
 ### Response
@@ -172,7 +178,8 @@
 
 `GET /api/trabajador/:id`
 
-    curl -i -H 'Accept: application/json' http://localhost:8000/api/trabajador/
+    curl --location --request GET 'http://localhost:8000/api/trabajador/2' \
+    --header 'x-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjE2NCwiaWF0IjoxNjcyMDA5OTk0LCJleHAiOjE2NzI2MTQ3OTR9.5DRsAFuNPecCZq5GM0ElBJdwRtCFmWTsFoPxBaFSPns'
 
 
 ### Response
@@ -196,7 +203,8 @@
 
 `GET /api/trabajador/`
 
-    curl -i -H 'Accept: application/json' http://localhost:8000/api/trabajador/
+    curl --location --request GET 'http://localhost:8000/api/trabajador/' \
+    --header 'x-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjMsImlhdCI6MTY3NzI4NDc2MSwiZXhwIjoxNjc3ODg5NTYxfQ.c2yjNMAj2Zc0LFXYk26IfqF8nLcMJr8XT_fTEZeb5as'
 
 
 ### Response
